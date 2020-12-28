@@ -1,0 +1,31 @@
+.to-do-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+
+.to-do-box {
+	border: 1px solid black;
+	border-radius: 10px;
+    overflow: hidden;
+}
+
+.new-to-do, .to-do-date {
+	padding: 30px;
+}
+
+li {
+	list-style-type: none; 
+	padding: 30px;
+	font-size: 20px;
+    color: rgb(32, 32, 32);
+    width: 600px;
+    cursor: pointer;
+}
+
+li:nth-child(even) {
+	background-color: rgb(224, 224, 224);
+} 
+

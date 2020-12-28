@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="title" content="To-do list">
+	<title>TO-DO LIST</title>
+	<link rel="stylesheet" href="assets/css/reset.css">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+	<div class="to-do-wrapper">
+		<div class="to-do-box">
+			<form>
+				<div class="new-to-do">
+					<input type="text" id="task" placeholder="Write new task" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Write new task'">
+					<input type="submit" value="Add new task">
+				</div>
+				<div class="to-do-date">
+					<label for="date">Deadline:</label>
+					<input type="date" id="task-date">
+				</div>
+			</form>
+			<ul>
+				<li>Stay at home</li>
+				<li>Have a ZOOM party</li>
+				<li>Eat all the food</li>
+			</ul>
+		</div>
+	</div>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="scripts/script.js"></script>
+</body>
+</html>
+
