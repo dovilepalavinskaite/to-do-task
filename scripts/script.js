@@ -1,22 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-let newTask = document.querySelector("#task").value;
-document.querySelector("#task").addEventListener("click", "input", function(){
-	newTask = this.val();
-});
 
-document.querySelector('input[type=submit]').click(function() {
-	if (newTask.length) {
-		appendNew();
-		this.val('');
-	}
-});
-
-function appendNew(){
-	document.querySelector('ul').append('<li>' + newTask + '</li>');
-}
+	// Deleting clicked task:
 
 
+	const tasks = document.querySelectorAll("li");
+	tasks.forEach(function(deleting) {
+	    deleting.addEventListener("click", function() {
+	    	const ifYes = confirm ("Do you really want to remove this task?");
+	    	if (ifYes) { // Deletes task if confirmed:
+	      		this.remove();
+	      	}
+	    });
+	});
 
 });
 

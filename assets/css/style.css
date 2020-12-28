@@ -13,7 +13,13 @@
 }
 
 .new-to-do, .to-do-date {
-	padding: 30px;
+	padding: 18px;
+	background-color: rgb(25, 94, 131);
+}
+
+.deadline-date-label {
+	color: #fff;
+	font-size: 30px;
 }
 
 li {
