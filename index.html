@@ -13,8 +13,9 @@
 		<div class="to-do-box">
 			<form>
 				<div class="new-to-do">
-					<input type="text" id="task" placeholder="Write new task" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Write new task'">
-					<input type="submit" id= "submit-btn" onclick="appendNew()" value="Add new task">
+					<label>New task:</label>
+					<input type="text" id="task" placeholder="Write new task" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Write new task'" maxlength="160">
+					<div type="submit" id= "submit-btn" value="" >Add new task</div>
 				</div>
 				<div class="to-do-date">
 					<label for="date" class="deadline-date-label">Deadline:</label>
@@ -22,9 +23,36 @@
 				</div>
 			</form>
 			<ul id="to-do-list">
-				<li>Stay at home</li>
-				<li>Have a ZOOM party</li>
-				<li>Eat all the food</li>
+				<li class="list-content">
+					<div>
+						<p class="task-to-do"><span>TASK: </span>Stay at home</p>
+						<p>DEADLINE: <span class="deadline">52</span></p>
+					</div>
+					<div>
+						<i class="fas fa-check"></i>
+						<i class="fas fa-trash"></i>
+					</div>
+				</li>
+				<li class="list-content">
+					<div>
+						<p class="task-to-do"><span>TASK: </span>Have a ZOOM party</p>
+						<p>DEADLINE: <span class="deadline">9</span></p>
+					</div>
+					<div>
+						<i class="fas fa-check"></i>
+						<i class="fas fa-trash"></i>
+					</div>
+				</li>
+				<li class="list-content">
+					<div>
+						<p class="task-to-do"><span>TASK: </span>Eat all the food</p>
+						<p>DEADLINE: <span class="deadline">4</span></p>
+					</div>
+					<div>
+						<i class="fas fa-check"></i>
+						<i class="fas fa-trash"></i>
+					</div>
+				</li>
 			</ul>
 		</div>
 	</div>
