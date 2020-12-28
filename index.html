@@ -15,45 +15,15 @@
 				<div class="new-to-do">
 					<label>New task:</label>
 					<input type="text" id="task" placeholder="Write new task" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Write new task'" maxlength="160">
-					<div type="submit" id= "submit-btn" value="" >Add new task</div>
+					<div type="submit" id= "submit-btn" value="" >Add</div>
 				</div>
 				<div class="to-do-date">
 					<label for="date" class="deadline-date-label">Deadline:</label>
 					<input type="date" id="task-date">
+					<input type="time" id="task-time">
 				</div>
 			</form>
-			<ul id="to-do-list">
-				<li class="list-content">
-					<div>
-						<p class="task-to-do"><span>TASK: </span>Stay at home</p>
-						<p>DEADLINE: <span class="deadline">52</span></p>
-					</div>
-					<div>
-						<i class="fas fa-check"></i>
-						<i class="fas fa-trash"></i>
-					</div>
-				</li>
-				<li class="list-content">
-					<div>
-						<p class="task-to-do"><span>TASK: </span>Have a ZOOM party</p>
-						<p>DEADLINE: <span class="deadline">9</span></p>
-					</div>
-					<div>
-						<i class="fas fa-check"></i>
-						<i class="fas fa-trash"></i>
-					</div>
-				</li>
-				<li class="list-content">
-					<div>
-						<p class="task-to-do"><span>TASK: </span>Eat all the food</p>
-						<p>DEADLINE: <span class="deadline">4</span></p>
-					</div>
-					<div>
-						<i class="fas fa-check"></i>
-						<i class="fas fa-trash"></i>
-					</div>
-				</li>
-			</ul>
+			<ul id="to-do-list"></ul>
 		</div>
 	</div>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>

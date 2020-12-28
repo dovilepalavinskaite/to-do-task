@@ -7,22 +7,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Takes input value:
 
-	document.querySelector("#task").addEventListener('input', function(){
-		newTask = this.value;
-	});
+	// document.querySelector("#task").addEventListener('input', function(){
+		
+	// 	newTask = this.value;
+	// });
 
 	// Calls function for inserting value to HTML and clears input field:
 
 	document.querySelector('#submit-btn').addEventListener("click", function() {
-		appendNew();
-		resetDate();
-		resetTask();
+		if (document.querySelector('#task').value.length) {
+			saveItemInStorage();
+			loadLists();
+			resetDate();
+			resetTask();
+			resetTime();
+		} else {
+			alert ("The field is empty. Please insert the new task");
+		}
 	});
 
-	// Functions for getting and reseting deadline value:
+	function loadLists() {
+		listItems();
+		addCheckButtonEvents();
+		addDeleteButtonEvents();
+	};
+
+	function saveItemInStorage() {
+		const items = getItems() || [];
+		items.push({'task': getTask(), 'date': getDate(), 'time': getTime()});
+		sessionStorage.setItem('items', JSON.stringify(items));
+	};
+
+	function deleteItemFromStorage(itemIndex) {
+		const items = [];
+		getItems().forEach((list, index) => {
+			if (index !== parseInt(itemIndex)) {
+				items.push(list)
+			}
+		});
+		sessionStorage.setItem('items', JSON.stringify(items));
+	};
+
+	function getItems() {
+		if (sessionStorage.items) {
+			return JSON.parse(sessionStorage.items);
+		}
+		return null;
+	};
+
+	// Functions for getting and reseting deadline date value:
 
 	function getDate(){
-		return document.querySelector('#task-date').value;
+		if (document.querySelector('#task-date').value.length) {
+			return document.querySelector('#task-date').value;
+		} else {
+			return ("NO DATE");
+		}
 	};
 
 	function resetDate() {
@@ -41,27 +81,37 @@ document.addEventListener('DOMContentLoaded', function() {
  
 	};
 
+	// Functions for getting and reseting deadline time value:
+
+	function getTime(){
+		return document.querySelector('#task-time').value;
+	};
+
+	function resetTime() {
+		document.querySelector('#task-time').value = '';
+ 
+	};
+
+
 	// Function for inserting value to HTML:
 
-	function appendNew(){
-		// fullList.appendChild('<li>' + newTask + '</li>');
-		fullList.insertAdjacentHTML( 'beforeend', listHTMLString() );
-		// var li = document.createElement("li");
-		// li.appendChild(document.createTextNode(document.querySelector('#task').value));
-		// document.querySelector('ul').appendChild(li);
+	function listItems(){
+		fullList.innerHTML = '';
+		getItems().forEach((item, index) => {
+			fullList.insertAdjacentHTML( 'beforeend', listHTMLString(item, index) );
+		});
 
 	};
 
-	function listHTMLString() {
-		debugger
+	function listHTMLString(item, index) {
 		return `<li class='list-content'> \
 			<div> \
-				<p class='task-to-do'><span>TASK: </span>${getTask()}</p> \
-				<p>DEADLINE: <span class='deadline'>${getDate()}</span></p> \
+				<p class='task-to-do'><span>TASK: </span>${item.task}</p> \
+				<p>DEADLINE: <span class='deadline'>${item.date} ${item.time}</span></p> \
 			</div> \
 			<div> \
 				<i class='fas fa-check'></i> \
-				<i class='fas fa-trash'></i> \
+				<i class='fas fa-trash' data-list-index='${index}'></i> \
 			</div> \
 		</li>`
 	}
@@ -70,31 +120,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Deleting task:
 
-
-	const deletingIcon = document.querySelectorAll(".fa-trash");
-	deletingIcon.forEach(function(deleting) {
-	    deleting.addEventListener('click', function() {
-	    	const ifYes = confirm ("Do you really want to remove this task?");
-	    	if (ifYes) { // Deletes task if confirmed:
-	      		this.closest('li').remove();
-	      	}
-	    });
-	});
+	function addDeleteButtonEvents() {
+		document.querySelectorAll(".fa-trash").forEach(function(deleting) {
+		    deleting.addEventListener('click', function() {
+		    	const ifConfirmed = confirm ("Do you really want to remove this task?");
+		    	if (ifConfirmed) { // Deletes task if confirmed:
+		      		deleteItemFromStorage(this.dataset.listIndex);
+		      		loadLists();
+		      	}
+		    });
+		});
+	};
 
 	// Marking task as done:
 
-	const doneIcon = document.querySelectorAll(".fa-check");
-	doneIcon.forEach(function(checking) {
-		checking.addEventListener('click', function () {
-			this.classList.add('checked');
-			this.parentElement.previousElementSibling.firstElementChild.classList.add('completed');
+	function addCheckButtonEvents () {
+		document.querySelectorAll(".fa-check").forEach(function(checking) {
+			checking.addEventListener('click', function () {
+				this.classList.add('checked');
+				// document.querySelector('#to-do-list').appendChild('li');
+				this.closest('li').appendChild(document.querySelector('#to-do-list'));
+				this.parentElement.previousElementSibling.firstElementChild.classList.add('completed');
+			});
 		});
-	});
+	};
 
 	//Sorting tasks by date:
 
-
-
+	loadLists();
 
 });
+
 
