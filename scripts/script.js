@@ -1,18 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 // Setting variables:
-	// let newTask = document.querySelector('#task').value;
 	const fullList = document.querySelector('ul');
 
+// Loads current tasks when page is beinig opened:
 
-	// Takes input value:
+	loadLists(); 
 
-	// document.querySelector("#task").addEventListener('input', function(){
-		
-	// 	newTask = this.value;
-	// });
-
-	// Calls function for inserting value to HTML and clears input field:
+// Calls function for inserting value to HTML and clears input field:
 
 	document.querySelector('#submit-btn').addEventListener("click", function() {
 		if (document.querySelector('#task').value.length) {
@@ -26,129 +21,168 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
+// Loading new list of tasks: 
+
 	function loadLists() {
 		listItems();
 		addCheckButtonEvents();
 		addDeleteButtonEvents();
 	};
 
+// Save list in Storage: gets existing items or pushes new tasks in object:	
+
 	function saveItemInStorage() {
-		const items = getItems() || [];
-		items.push({'task': getTask(), 'date': getDate(), 'time': getTime()});
-		sessionStorage.setItem('items', JSON.stringify(items));
+		const items = getItems();
+		items.push({
+			'id': items.length,
+			'task': getTask(),
+			'date': getDate(),
+			'time': getTime(),
+			'completed': false
+		});
+		sessionStorage.setItem('items', JSON.stringify(items)); // gives a string
 	};
+
+// Updates status  with a new list - if checked task has the same index,
+// it will be not added to the new list
+
+	function updateCompleteStatus(itemIndex) {
+		const items = [];
+		getItems().forEach((list, index) => {
+			if (index === parseInt(itemIndex)) {
+				list.completed = true;
+			}
+			items.push(list)
+		});
+		sessionStorage.setItem('items', JSON.stringify(items));
+	}
+
+// Deletes task completely from the storage.
+// Pushes to the new array and skipes clicked task as deleted:
 
 	function deleteItemFromStorage(itemIndex) {
 		const items = [];
+		let id = 0;
 		getItems().forEach((list, index) => {
 			if (index !== parseInt(itemIndex)) {
+				list.id = id
 				items.push(list)
+				id += 1;
 			}
 		});
 		sessionStorage.setItem('items', JSON.stringify(items));
 	};
 
+// Gets all current tasks:
+
 	function getItems() {
 		if (sessionStorage.items) {
 			return JSON.parse(sessionStorage.items);
 		}
-		return null;
+		return [];
 	};
 
-	// Functions for getting and reseting deadline date value:
+// Functions for getting and reseting deadline date value:
 
-	function getDate(){
+	function getDate(){ // Gets data from HTML
 		if (document.querySelector('#task-date').value.length) {
 			return document.querySelector('#task-date').value;
 		} else {
-			return ("NO DATE");
+			return "";
 		}
 	};
 
-	function resetDate() {
+	function resetDate() { // Reset value from HTML to empty string
 		document.querySelector('#task-date').value = '';
  
 	};
 
-	// Functions for getting and reseting task value:
+// Functions for getting and reseting task value:
 
-	function getTask(){
+	function getTask(){ // gets task value from HTML
 		return document.querySelector('#task').value;
 	};
 
-	function resetTask() {
+	function resetTask() { //reset task value from HTML
 		document.querySelector('#task').value = '';
  
 	};
 
-	// Functions for getting and reseting deadline time value:
+// Functions for getting and reseting deadline time value:
 
-	function getTime(){
+	function getTime(){ // gets time from HTML
 		return document.querySelector('#task-time').value;
 	};
 
-	function resetTime() {
+	function resetTime() { // clears time from HTML
 		document.querySelector('#task-time').value = '';
  
 	};
 
-
-	// Function for inserting value to HTML:
+// Function for inserting value to HTML:
 
 	function listItems(){
 		fullList.innerHTML = '';
-		getItems().forEach((item, index) => {
+		sortListsByDate().forEach((item, index) => {
 			fullList.insertAdjacentHTML( 'beforeend', listHTMLString(item, index) );
 		});
 
 	};
 
+// Creates HTML structure for the tasks and takes dynamic value:
+
 	function listHTMLString(item, index) {
 		return `<li class='list-content'> \
 			<div> \
-				<p class='task-to-do'><span>TASK: </span>${item.task}</p> \
+				<p class='task-to-do'><span>TASK: </span>
+					<span class=${item.completed ? 'completed' : ''}>${item.task}</span> \
+				</p> \
 				<p>DEADLINE: <span class='deadline'>${item.date} ${item.time}</span></p> \
 			</div> \
-			<div> \
-				<i class='fas fa-check'></i> \
-				<i class='fas fa-trash' data-list-index='${index}'></i> \
+			<div data-list-index='${item.id}'> \
+				<i class='fas fa-check ${item.completed ? 'checked' : ''}'></i> \
+				<i class='fas fa-trash'></i> \
 			</div> \
 		</li>`
 	}
 
-
-
-	// Deleting task:
+// Deleting task button:
 
 	function addDeleteButtonEvents() {
 		document.querySelectorAll(".fa-trash").forEach(function(deleting) {
 		    deleting.addEventListener('click', function() {
 		    	const ifConfirmed = confirm ("Do you really want to remove this task?");
 		    	if (ifConfirmed) { // Deletes task if confirmed:
-		      		deleteItemFromStorage(this.dataset.listIndex);
+		      		deleteItemFromStorage(this.parentElement.dataset.listIndex);
 		      		loadLists();
 		      	}
 		    });
 		});
 	};
 
-	// Marking task as done:
+// Marking task as done button:
 
 	function addCheckButtonEvents () {
 		document.querySelectorAll(".fa-check").forEach(function(checking) {
 			checking.addEventListener('click', function () {
 				this.classList.add('checked');
-				// document.querySelector('#to-do-list').appendChild('li');
-				this.closest('li').appendChild(document.querySelector('#to-do-list'));
-				this.parentElement.previousElementSibling.firstElementChild.classList.add('completed');
+				updateCompleteStatus(this.parentElement.dataset.listIndex) // update status function
+				loadLists(); // reloads tasks list
 			});
 		});
 	};
 
 	//Sorting tasks by date:
 
-	loadLists();
+	function sortListsByDate() {
+		return getItems().sort(function(a,b){
+ 			return new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`);
+		});
+	};
+
 
 });
+
+
 
 

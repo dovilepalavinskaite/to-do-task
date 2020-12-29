@@ -4,12 +4,15 @@
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+	padding: 20px;
 }
 
 .to-do-box {
 	border: 1px solid black;
 	border-radius: 10px;
     overflow: hidden;
+    width: 100%;
+    max-width: 700px;
 }
 
 .new-to-do {
@@ -52,7 +55,6 @@ li {
 	padding: 30px;
 	font-size: 20px;
     color: rgb(32, 32, 32);
-    width: 700px;
 }
 
 li:nth-child(even) {
@@ -83,4 +85,33 @@ li:nth-child(even) {
 
 .checked { /*Class for completed task:*/
 	color: #2b9348;
+}
+
+
+/*Media query:*/
+
+@media (min-width: 300px) and (max-width: 480px) {
+  
+.to-do-wrapper {
+	display: block;
+}
+
+.new-to-do {
+	display: block;
+}
+
+#submit-btn {
+	margin-top: 10px;
+	font-size: 20px;
+	width: 50px;
+}
+
+.fas {
+	font-size: 30px;
+}
+
+li {
+	font-size: 15px;
+}
+  
 }
