@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function listHTMLString(item, index) {
 		return `<li class='list-content'> \
 			<div> \
-				<p class='task-to-do'><span>TASK: </span>
+				<p class='task-to-do'><span class=${item.completed ? 'completed' : ''}>TASK: </span>
 					<span class=${item.completed ? 'completed' : ''}>${item.task}</span> \
 				</p> \
 				<p>DEADLINE: <span class='deadline'>${item.date} ${item.time}</span></p> \
